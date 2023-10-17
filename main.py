@@ -1,16 +1,23 @@
-from random import choices
+from random import choice
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 computer_cards = []
 players_cards = []
+is_game_over = False
 
 
-def deal_card(num):
-    return choices(cards, k=num)
+def deal_card():
+    card = choice(cards)
+    return card
 
 
-def calculating_score(arr):
-    return sum(arr)
+def calculating_score(cards):
+    if sum(cards) == 21 and len(cards) == 2:
+        return 0
+    if sum(cards) > 21 and 11 in cards:
+        cards.remove(11)
+        cards.append(1)
+    return sum(cards)
 
 
 def ending(p_score, c_score):
@@ -24,14 +31,19 @@ def ending(p_score, c_score):
         print("It is draw.")
 
 
-players_cards = deal_card(2)
-computer_cards = deal_card(2)
+for _ in range(2):
+    computer_cards.append(deal_card())
+    players_cards.append(deal_card())
+
 p_score = calculating_score(players_cards)
 c_score = calculating_score(computer_cards)
-if 11 in computer_cards and 10 in computer_cards:
-    print(f"Computers final hand is {computer_cards}. Computer wins.")
-elif 11 in players_cards and 10 in players_cards:
-    print(f"Players final hand is {players_cards}. Player wins. ")
+
+if p_score == 0 or c_score == 0 or p_score > 21:
+    is_game_over = True
+
+
+p_score = calculating_score(players_cards)
+c_score = calculating_score(computer_cards)
 print(f"Your cards: {players_cards}, current score: {p_score}")
 print(f"Computer's first card: {computer_cards[0]}")
 should_pass = input("Type 'y' to get another card, type 'n' to pass. ")
