@@ -35,24 +35,22 @@ for _ in range(2):
     computer_cards.append(deal_card())
     players_cards.append(deal_card())
 
-p_score = calculating_score(players_cards)
-c_score = calculating_score(computer_cards)
-
-if p_score == 0 or c_score == 0 or p_score > 21:
-    is_game_over = True
-
-
-p_score = calculating_score(players_cards)
-c_score = calculating_score(computer_cards)
-print(f"Your cards: {players_cards}, current score: {p_score}")
-print(f"Computer's first card: {computer_cards[0]}")
-should_pass = input("Type 'y' to get another card, type 'n' to pass. ")
-if should_pass == "n":
-    ending(p_score, c_score)
-elif should_pass == "y":
-    players_cards += deal_card(1)
+while not is_game_over:
     p_score = calculating_score(players_cards)
     c_score = calculating_score(computer_cards)
     print(f"Your cards: {players_cards}, current score: {p_score}")
     print(f"Computer's first card: {computer_cards[0]}")
-    ending(p_score, c_score)
+
+    if p_score == 0 or c_score == 0 or p_score > 21:
+        is_game_over = True
+    else:
+        should_pass = input("Type 'y' to get another card, type 'n' to pass. ")
+        if should_pass == "y":
+            players_cards.append(deal_card())
+        else:
+            is_game_over = True
+
+
+while c_score != 0 and c_score < 17:
+    computer_cards.append(deal_card())
+    c_score = calculating_score(computer_cards)
